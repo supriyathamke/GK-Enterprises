@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Cart - G.K. Enterprises</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .cart-quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .cart-quantity-controls button {
+            width: 35px;
+            height: 35px;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .cart-quantity-number {
+            min-width: 25px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .cart-action-form {
+            display: inline-block;
+            margin: 0;
+        }
+
+        .cart-remove-form {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>G.K. Enterprises</h1>
+        <p>Quality Housekeeping Materials</p>
+    </header>
+
+    <nav>
+        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('products') }}">Products</a>
+        <a href="{{ url_for('cart') }}">Cart</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+
+        {% if session.get('customer_id') %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+    </nav>
+
+    <div class="container">
+
+        <h2>My Shopping Cart</h2>
+
+        {% for message in get_flashed_messages() %}
+            <p class="auth-message">{{ message }}</p>
+        {% endfor %}
+
+        {% if cart_items %}
+
+            {% for item in cart_items %}
+
+            <div class="product-card"
+                 style="margin-bottom: 20px; text-align: left;">
+
+                <img
+                    src="{{ url_for('static', filename='images/' + item.image) }}"
+                    alt="{{ item.name }}"
+                    style="width: 100px; height: 100px;"
+                >
+
+                <h3>{{ item.name }}</h3>
+
+                <p>Price: ₹{{ item.price }}</p>
+
+                <p>Quantity:</p>
+
+                <div class="cart-quantity-controls">
+
+                    <!-- Decrease quantity -->
+                    <form class="cart-action-form"
+                          action="{{ url_for('remove_from_cart', product_id=item.id) }}"
+                          method="POST"
+                          onsubmit="return decreaseQuantity(event, this, {{ item.quantity }});">
+
+                        <input type="hidden" name="change_quantity" value="decrease">
+
+                        <button type="submit"
+                                aria-label="Decrease quantity">−</button>
+                    </form>
+
+                    <span class="cart-quantity-number">
+                        {{ item.quantity }}
+                    </span>
+
+                    <!-- Increase quantity -->
+                    <form class="cart-action-form"
+                          action="{{ url_for('add_to_cart', product_id=item.id) }}"
+                          method="POST">
+
+                        <input type="hidden" name="quantity" value="1">
+
+                        <button type="submit"
+                                aria-label="Increase quantity"
+                                {% if item.quantity >= 99 %}disabled{% endif %}>+</button>
+                    </form>
+
+                </div>
+
+                <p>
+                    Subtotal:
+                    <strong>₹{{ item.item_total }}</strong>
+                </p>
+
+                <!-- Remove entire product -->
+                <form class="cart-remove-form"
+                      action="{{ url_for('remove_from_cart', product_id=item.id) }}"
+                      method="POST">
+
+                    <button type="submit">Remove</button>
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+            <h2>Total Amount: ₹{{ total }}</h2>
+
+            <p>
+                <a class="shop-button" href="{{ url_for('products') }}">
+                    Continue Shopping
+                </a>
+            </p>
+
+        {% else %}
+
+            <p>Your cart is empty.</p>
+
+            <p>
+                <a class="shop-button" href="{{ url_for('products') }}">
+                    Start Shopping
+                </a>
+            </p>
+
+        {% endif %}
+
+    </div>
+
+    <footer>
+        <p>© 2026 G.K. Enterprises | Teli Galli, Andheri East, Mumbai</p>
+    </footer>
+
+    <script>
+        function decreaseQuantity(event, form, quantity) {
+            event.preventDefault();
+
+            if (quantity > 1) {
+                fetch(form.action, {
+                    method: "POST",
+                    body: new FormData(form)
+                }).then(function () {
+                    window.location.reload();
+                });
+
+                return false;
+            }
+
+            if (confirm("Quantity is 1. Remove this product from cart?")) {
+                form.submit();
+            }
+
+            return false;
+        }
+    </script>
+
+</body>
+</html>

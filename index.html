@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>G.K. Enterprises | Housekeeping Materials</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1>G.K. Enterprises</h1>
+        <p>Your Trusted Partner for Quality Housekeeping Materials</p>
+    </header>
+
+<nav>
+    <a href="{{ url_for('register') }}">Register</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('products') }}">Products</a>
+    <a href="{{ url_for('about') }}">About Us</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+
+    {% if session.get('customer_id') %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
+</nav>
+
+    <main class="home-container">
+
+        <!-- Welcome Banner -->
+        <section class="hero-banner">
+
+            <div class="hero-content">
+
+                <p class="hero-tagline">
+                    CLEAN SPACES, HAPPY PLACES
+                </p>
+
+                <h2>Welcome to G.K. Enterprises</h2>
+
+                <p class="hero-description">
+                    Discover quality housekeeping materials for your
+                    home, office, shop and business. Find your everyday
+                    cleaning essentials at reasonable prices.
+                </p>
+
+                {% if session.get('customer_id') %}
+                    <p class="customer-welcome">
+                        Hello, {{ session.get('customer_name', 'Customer') }}!
+                    </p>
+                {% endif %}
+
+                <a href="{{ url_for('products') }}" class="shop-button">
+                    Shop Now &#8594;
+                </a>
+
+            </div>
+
+            <div class="hero-decoration">
+                <div class="clean-icon">&#10024;</div>
+                <div class="clean-title">Cleaning Made Easy</div>
+                <p>Quality Products • Everyday Essentials</p>
+            </div>
+
+        </section>
+
+        <!-- Categories Section -->
+        <section class="home-categories">
+
+            <h2>Explore Our Categories</h2>
+
+            <p class="section-description">
+                Everything you need to keep your spaces clean and fresh.
+            </p>
+
+            <div class="category-grid">
+
+                <div class="category-card">
+                    <div class="category-icon">&#129529;</div>
+                    <h3>Cleaning Tools</h3>
+                    <p>Brooms, mops, brushes and dustpans.</p>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">&#129532;</div>
+                    <h3>Cleaning Supplies</h3>
+                    <p>Cloths, scrubbers, buckets and gloves.</p>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">&#129532;</div>
+                    <h3>Cleaning Chemicals</h3>
+                    <p>Floor cleaners, phenyl and toilet cleaners.</p>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">&#10024;</div>
+                    <h3>Freshness Products</h3>
+                    <p>Room fresheners and other essentials.</p>
+                </div>
+
+            </div>
+
+            <div class="browse-products">
+                <h2>Find Your Cleaning Essentials</h2>
+                <p>Explore our range of housekeeping products today.</p>
+
+                <a href="{{ url_for('products') }}" class="shop-button">
+                    View All Products &#8594;
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 G.K. Enterprises |
+           Teli Galli, Andheri East, Mumbai - 400069</p>
+    </footer>
+
+</body>
+</html>

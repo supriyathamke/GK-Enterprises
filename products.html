@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - G.K. Enterprises</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .quantity-controls button {
+            width: 35px;
+            height: 35px;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .quantity-controls input {
+            width: 45px;
+            height: 32px;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .add-cart-form {
+            margin: 0;
+        }
+
+        .add-cart-button {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>G.K. Enterprises</h1>
+        <p>Quality Housekeeping Materials</p>
+    </header>
+
+    <nav>
+        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('products') }}">Products</a>
+        <a href="{{ url_for('cart') }}">Cart</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+
+        {% if session.get('customer_id') %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+    </nav>
+
+    <div class="container">
+
+        <h2>Our Products</h2>
+
+        {% for message in get_flashed_messages() %}
+            <p class="auth-message">{{ message }}</p>
+        {% endfor %}
+
+        <div class="products">
+
+            {% for product in products %}
+
+            <div class="product-card">
+
+                <img
+                    src="{{ url_for('static', filename='images/' + product.image) }}"
+                    alt="{{ product.name }}"
+                >
+
+                <h3>{{ product.name }}</h3>
+
+                <p>{{ product.description }}</p>
+
+                <p class="price">₹{{ product.price }}</p>
+
+                <p class="availability">Available</p>
+
+                <form
+                    class="add-cart-form"
+                    action="{{ url_for('add_to_cart', product_id=product.id) }}"
+                    method="POST"
+                >
+                    <div class="quantity-controls">
+
+                        <button type="button"
+                                onclick="changeQuantity(this, -1)"
+                                aria-label="Decrease quantity">−</button>
+
+                        <input type="number"
+                               name="quantity"
+                               value="1"
+                               min="1"
+                               max="99"
+                               aria-label="Quantity"
+                               required>
+
+                        <button type="button"
+                                onclick="changeQuantity(this, 1)"
+                                aria-label="Increase quantity">+</button>
+
+                    </div>
+
+                    <button type="submit" class="add-cart-button">
+                        Add to Cart
+                    </button>
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <p style="text-align: center; margin-top: 30px;">
+            <a class="shop-button" href="{{ url_for('cart') }}">
+                View Cart
+            </a>
+        </p>
+
+    </div>
+
+    <footer>
+        <p>© 2026 G.K. Enterprises | Teli Galli, Andheri East, Mumbai</p>
+    </footer>
+
+    <script>
+        function changeQuantity(button, change) {
+            const input = button.parentElement.querySelector('input');
+            let quantity = parseInt(input.value) || 1;
+
+            quantity += change;
+
+            if (quantity < 1) {
+                quantity = 1;
+            }
+
+            if (quantity > 99) {
+                quantity = 99;
+            }
+
+            input.value = quantity;
+        }
+    </script>
+
+</body>
+</html>

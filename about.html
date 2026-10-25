@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Us - G.K. Enterprises</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1>G.K. Enterprises</h1>
+        <p>Quality Housekeeping Materials</p>
+    </header>
+
+<nav>
+    <a href="{{ url_for('register') }}">Register</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('products') }}">Products</a>
+    <a href="{{ url_for('about') }}">About Us</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+
+    {% if session.get('customer_id') %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
+</nav>
+
+
+
+    <div class="container">
+
+        <h2>About G.K. Enterprises</h2>
+
+        <p>
+            G.K. Enterprises is a shop located at Teli Galli,
+            Andheri East, Mumbai.
+        </p>
+
+        <p>
+            We provide different types of housekeeping
+            materials for homes, offices, shops and other places.
+        </p>
+
+        <h2>Our Goal</h2>
+
+        <p>
+            Our goal is to provide useful and quality housekeeping
+            materials to our customers at reasonable prices.
+        </p>
+
+        <h2>Why Choose Us?</h2>
+
+        <ul>
+            <li>Quality housekeeping materials</li>
+            <li>Different types of cleaning products</li>
+            <li>Reasonable prices</li>
+            <li>Customer-friendly service</li>
+        </ul>
+
+    </div>
+
+    <footer>
+        <p>© 2026 G.K. Enterprises | Teli Galli, Andheri East, Mumbai</p>
+    </footer>
+
+</body>
+</html>

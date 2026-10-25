@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - G.K. Enterprises</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1>G.K. Enterprises</h1>
+            <h2>Customer Login</h2>
+            <p>Login to continue shopping.</p>
+
+            {% for message in get_flashed_messages() %}
+                <p class="auth-message">{{ message }}</p>
+            {% endfor %}
+
+            <form method="POST">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password"
+                       name="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p>New customer?
+                <a href="{{ url_for('register') }}">Register here</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
